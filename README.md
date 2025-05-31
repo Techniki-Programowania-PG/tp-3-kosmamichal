@@ -1,64 +1,92 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/6NuopFp9)
-# Techniki Programowania - projekt 3
-Projekt polega na zbudowaniu biblioteki w c++ do przetwarzania sygnałów. Biblioteka ma być udostępniona jako moduł pythonowy przy użyciu biblioteki pybind11.
+# scikit_build_example
 
-## Zależności
-W celu realizacji projektu należy przygotować środowisko pracy. Niezbędne będą:
-1. CMake
-2. Kompilator (MSVC2019 na Windowsie, g++ na linuksie)
-3. git (git bash/ git for desktop na windowsie, git na linuksie)
-4. Python (najlepiej miniconda)
+[![Gitter][gitter-badge]][gitter-link]
 
-<details><summary><b>Windows</b></summary>
-<p>
+|      CI              | status |
+|----------------------|--------|
+| conda.recipe         | [![Conda Actions Status][actions-conda-badge]][actions-conda-link] |
+| pip builds           | [![Pip Actions Status][actions-pip-badge]][actions-pip-link] |
 
-[CMake](https://cmake.org/download/)
 
-[MSVC](https://visualstudio.microsoft.com/pl/vs/community/)
+An example project built with [pybind11][] and [scikit-build-core][]. Python
+3.9+ (see older commits for 3.7+, or even older versions of Python using [scikit-build (classic)][]).
 
-[git](https://git-scm.com/download/win)
 
-[miniconda](https://docs.anaconda.com/free/miniconda/index.html)
+[gitter-badge]:            https://badges.gitter.im/pybind/Lobby.svg
+[gitter-link]:             https://gitter.im/pybind/Lobby
+[actions-badge]:           https://github.com/pybind/scikit_build_example/workflows/Tests/badge.svg
+[actions-conda-link]:      https://github.com/pybind/scikit_build_example/actions?query=workflow%3AConda
+[actions-conda-badge]:     https://github.com/pybind/scikit_build_example/workflows/Conda/badge.svg
+[actions-pip-link]:        https://github.com/pybind/scikit_build_example/actions?query=workflow%3APip
+[actions-pip-badge]:       https://github.com/pybind/scikit_build_example/workflows/Pip/badge.svg
+[actions-wheels-link]:     https://github.com/pybind/scikit_build_example/actions?query=workflow%3AWheels
+[actions-wheels-badge]:    https://github.com/pybind/scikit_build_example/workflows/Wheels/badge.svg
 
-</p>
-</details>
+## Installation
 
-<details><summary><b>Ubuntu</b></summary>
-<p>
+- Clone this repository
+- `pip install ./scikit_build_example`
 
-```bash
-sudo apt install build-essential cmake git
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-chmod +x Miniconda3-latest-Linux-x86_64.sh
-./Miniconda3-latest-Linux-x86_64.sh
+## Test call
+
+```python
+import scikit_build_example
+
+scikit_build_example.add(1, 2)
 ```
 
-</p>
-</details>
+## Files
 
-## Szablon projektu
-Jako punkt wyjściowy najwygodniej jest pobrać przykład udostępniony przez autorów pybind11:
+This example has several files that are a good idea, but aren't strictly
+necessary. The necessary files are:
 
-```bash
-git clone https://github.com/pybind/scikit_build_example
-```
+* `pyproject.toml`: The Python project file
+* `CMakeLists.txt`: The CMake configuration file
+* `src/main.cpp`: The source file for the C++ build
+* `src/scikit_build_example/__init__.py`: The Python portion of the module. The root of the module needs to be `<package_name>`, `src/<package_name>`, or `python/<package_name>` to be auto-discovered.
 
-## Zadanie projektowe
-Podstawowe funkcjonalności do zaimplementowania:
-1. Wizualizacja sygnału z wykorzystaniem biblioteki [matplotplusplus](https://github.com/alandefreitas/matplotplusplus)
-2. [DFT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform) i transformata odwrotna
-3. [Filtracja 1D i 2D](https://docs.scipy.org/doc/scipy/tutorial/signal.html#filtering)
-4. Generowanie sygnałów o zadanej częstotliwości (sin, cos, prostokątny, piłokształtny)
+These files are also expected and highly recommended:
 
-Dodatkowo:
-1. [Pochodna sygnału](https://en.wikipedia.org/wiki/Finite_difference)
-2. Wykrywanie krawędzi (korzystajac z filtraci)
-3. Rozmycie gaussa (korzystajac z filtracji)
-4. Wykrywanie piku w sygnale dowolną metodą
-5. Progowanie sygnału (1 dla > progu, 0 dla mniejszego)
-6. Usuwanie niskich częstotliwości z sygnału (korzystajac z DFT)
-7. Usuwanie wysokich częstotliwości z sygnału (korzystajac z DFT)
-8. Zaszumianie sygnału (dodawanie sygnału losowego)
-9. Liczenie korelacji dwóch sygnałów
-10. Liczenie autokorelacji sygnału
-11. Interpolacja dwuliniowa na siatce
+* `.gitignore`: Git's ignore list, also used by `scikit-build-core` to select files for the SDist
+* `README.md`: The source for the PyPI description
+* `LICENSE`: The license file
+
+There are also several completely optional directories:
+
+* `.github`: configuration for [Dependabot][] and [GitHub Actions][]
+* `conda.recipe`: Example recipe. Normally you should submit projects to conda-forge instead of building them yourself, but this is useful for testing the example.
+* `docs/`: Documentation
+* `tests/`: Tests go here
+
+And some optional files:
+
+* `.pre-commit-config.yaml`: Configuration for the fantastic static-check runner [pre-commit][].
+* `noxfile.py`: Configuration for the [nox][] task runner, which helps make setup easier for contributors.
+
+This is a simplified version of the recommendations in the [Scientific-Python
+Development Guide][], which is a _highly_ recommended read for anyone
+interested in Python package development (Scientific or not). The guide also
+has a cookiecutter that includes scikit-build-core and pybind11 as a backend
+choice.
+
+### CI Examples
+
+There are examples for CI in `.github/workflows`. A simple way to produces
+binary "wheels" for all platforms is illustrated in the "wheels.yml" file,
+using [cibuildwheel][].
+
+## License
+
+pybind11 is provided under a BSD-style license that can be found in the LICENSE
+file. By using, distributing, or contributing to this project, you agree to the
+terms and conditions of this license.
+
+[cibuildwheel]: https://cibuildwheel.readthedocs.io
+[scientific-python development guide]: https://learn.scientific-python.org/development
+[dependabot]: https://docs.github.com/en/code-security/dependabot
+[github actions]: https://docs.github.com/en/actions
+[pre-commit]: https://pre-commit.com
+[nox]: https://nox.thea.codes
+[pybind11]: https://pybind11.readthedocs.io
+[scikit-build-core]: https://scikit-build-core.readthedocs.io
+[scikit-build (classic)]: https://scikit-build.readthedocs.io
